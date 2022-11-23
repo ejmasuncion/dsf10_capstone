@@ -13,6 +13,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 import numpy as np
 import requests
+from tqdm import tqdm
+import pickle
 
 
 options = Options()
@@ -57,7 +59,7 @@ def scrape_features_from_page(url):
     stars=len(_stars[0].findall("span[@aria-hidden]"))
     location=[i.text.replace("\n","") for i in dom.xpath("//span[contains(@class, 'address')]")][0]
     review_rating=[i.text.replace("\n","") for i in dom.xpath("//div[contains(@aria-label, 'Scored')]")][0]
-    location_score=[i.text.replace("\n","") for i in dom.xpath("//span[@class='review-score-badge']")][0]
+    # location_score=[i.text.replace("\n","") for i in dom.xpath("//span[@class='review-score-badge']")][0]
     descriptions=[i.findall('p') for i in dom.xpath("//div[@id='property_description_content']")]
     description=" ".join([i.text for i in descriptions[0]])
 
@@ -87,14 +89,18 @@ def scrape_features_from_page(url):
     print("surroundings qc")
     print(len(hotel_surroundings), len(hotel_surroundings_distance))
     surroundings_dict = {hotel_surroundings[i]: hotel_surroundings_distance[i] for i in range(len(hotel_surroundings))}
-    room_type  = [i.text.replace("\n","") for i in dom.xpath("//span[@class='hprt-roomtype-icon-link']")]
 
+    room_type_temp  = [i.text.replace("\n","") for i in dom.xpath("//span[@class='hprt-roomtype-icon-link']")]
+    room_type_rep = [i for i in dom.xpath("//*[@id='hprt-table']/tbody/tr/td[1]/@rowspan")]
+    room_df = pd.DataFrame({'room_type':room_type_temp,'reps':room_type_rep})
+    room_df = pd.DataFrame(room_df.values.repeat(room_df.reps, axis=0), columns=room_df.columns)
+    room_type = list(room_df['room_type']) #room_type should have the same length as price_list
 
     price_list=[float(i.text.replace("\n","").strip().replace(u'₱\xa0', '').replace(",",""))
         for i in dom.xpath("//span[@class='prco-valign-middle-helper']")]
 
     cheapest_price=min(price_list)
-    room_type_dict = {room_type[i]: price_list[i] for i in range(len(room_type))}
+    # room_type_dict = {room_type[i]: price_list[i] for i in range(len(room_type))} #cannot convert to dictionary since keys are not unique
 
     facilities_groups=[i.replace("\n","") for i in dom.xpath("//div[@class='bui-title__text hotel-facilities-group__title-text']//text()") if (i!='\n') & (i.replace("\n","")!="Internet")]
     hfg=dom.xpath("//div[@class='bui-spacer--large']")
@@ -116,12 +122,12 @@ def scrape_features_from_page(url):
 
     #-----------------------------------------------   
     all_features={"hotel_name_":hotel_name,"stars":stars,
-              "location":location , "location_score":location_score, 
+              "location":location , #"location_score":location_score, 
               "review_rating":review_rating, "description":description,
               "main_facilities":main_facilities, "total_reviews":total_reviews,
               "sub_ratings":sub_ratings, "sub_ratings_categories":sub_ratings_categories,"sub_ratings_dict":sub_ratings_dict,
               "hotel_surroundings":hotel_surroundings, "hotel_surroundings_distance":hotel_surroundings_distance,"surroundings_dict":surroundings_dict,
-              "room_type":room_type, "price_list":price_list,"cheapeast_price":cheapest_price, "room_type_dict":room_type_dict,
+              "room_type":room_type, "price_list":price_list,"cheapest_price":cheapest_price, #"room_type_dict":room_type_dict,
               "facilities_groups":facilities_groups,"all_facilities":all_facilities         
 }
 
@@ -130,34 +136,47 @@ def scrape_features_from_page(url):
     return df_all_features
 
 
-from tqdm import tqdm
-df=pd.read_csv("data/all_manila_hotels_v2.csv")
-links=df.url
+def scrape_hotel_info(urls, start_index, end_index):
+    """scrapes predefined hotel information from urls provided in a csv
 
-df_hotels_consolidated=pd.DataFrame()
+    Args:
+        urls (str): csv file of scraped hotel urls generated from booking_scraper2.py
+        start_index (num): which index in urls to start scraping
+        end_index (num): which index in urls to end scraping
 
-start_index=250
-end_index=300
+    Return:
+        a csv file of hotel information saved in the current directory
+    """
 
-for count,i in tqdm(enumerate(links[start_index:end_index])):
-    print("\n")
-    print("Opening link- "+ str(count) + " " + str(i))
-    # print(df.hotel_name[count+start_index])
-    try:
-        df_to_append=scrape_features_from_page(i)
-        df_to_append["link"]=links[count+start_index]
-        # df_to_append["hotel_name_from_all_urls"]=df.hotel_name[count+start_index]
-        # df_to_append["location_from_all_urls"]=df.location[count+start_index]
-        # df_to_append["distance_from_centre"]=df.distance[count+start_index]
-        df_hotels_consolidated=pd.concat([df_hotels_consolidated,df_to_append])
-    except Exception as e: 
-        print("")
-        print("Error:")
-        print(str(e))
-        print("Skipping due to error")
-        continue
-        
-    print(" ")
-    print("\n")
+    # df=pd.read_csv("data/all_manila_hotels_v2.csv")
+    df = pd.read_csv(urls)
+    links=df.url
 
-df_hotels_consolidated.to_csv('dataset_250-299.csv', index = False)
+    df_hotels_consolidated=pd.DataFrame()
+
+    start_index=start_index
+    end_index=end_index
+
+    for count,i in tqdm(enumerate(links[start_index:end_index])):
+        print("\n")
+        print("Opening link- "+ str(count) + " " + str(i))
+        # print(df.hotel_name[count+start_index])
+        try:
+            df_to_append=scrape_features_from_page(i)
+            df_to_append["link"]=links[count+start_index]
+            # df_to_append["hotel_name_from_all_urls"]=df.hotel_name[count+start_index]
+            # df_to_append["location_from_all_urls"]=df.location[count+start_index]
+            # df_to_append["distance_from_centre"]=df.distance[count+start_index]
+            df_hotels_consolidated=pd.concat([df_hotels_consolidated,df_to_append])
+        except Exception as e: 
+            print("")
+            print("Error:")
+            print(str(e))
+            print("Skipping due to error")
+            continue
+            
+        print(" ")
+        print("\n")
+
+    df_hotels_consolidated.to_csv('dataset_'+ str(start_index) + '-' + str(end_index-1) +'.csv', index = False)
+    pickle.dump(df_hotels_consolidated, open('dataset_'+ str(start_index) + '-' + str(end_index-1) +'.pkl', "wb")) #to retain datatypes
