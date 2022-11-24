@@ -95,8 +95,6 @@ def review_details(dom,main_dict,current_page):
         main_dict["From Page "+str(current_page)+", Person- "+ str(count+1)]=inner_dict
 
 
-
-
 def get_review_body(url):
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     driver.get(url)
@@ -116,14 +114,46 @@ def get_review_body(url):
     #get min and max pages
     current_page = 1
     time.sleep(3)
-    last = driver.find_element(by="xpath", value="//*[@id='review_list_page_container']/div[4]/div/div[1]/div/div[2]/div/div[7]/a/span[2]").text
-    last2 = last.split(" ")
-    last_page = int(last2[1])
-    print("Total Pages- " + str(last_page))
+    
+    all_pageList = driver.find_elements(by="xpath",value="//a[contains(@class,'bui-pagination__link')]")
+
+    try:
+        last = driver.find_element(by="xpath", value="//*[@id='review_list_page_container']/div[4]/div/div[1]/div/div[2]/div/div[7]/a/span[2]").text
+        last2 = last.split(" ")
+        last_page = int(last2[1])
+    except Exception as e: 
+        if len(all_pageList) == 2:
+            last = driver.find_element(by="xpath", value="//*[@id='review_list_page_container']/div[4]/div/div[1]/div/div[2]/div/div[2]/a/span[2]").text
+            last2 = last.split(" ")
+            last_page = int(last2[1]) + 1
+        elif len(all_pageList) == 3:
+            last = driver.find_element(by="xpath", value="//*[@id='review_list_page_container']/div[4]/div/div[1]/div/div[2]/div/div[3]/a/span[2]").text
+            last2 = last.split(" ")
+            last_page = int(last2[1]) + 1
+        elif len(all_pageList) == 4:
+            last = driver.find_element(by="xpath", value="//*[@id='review_list_page_container']/div[4]/div/div[1]/div/div[2]/div/div[4]/a/span[2]").text
+            last2 = last.split(" ")
+            last_page = int(last2[1]) + 1
+        elif len(all_pageList) == 5:
+            last = driver.find_element(by="xpath", value="//*[@id='review_list_page_container']/div[4]/div/div[1]/div/div[2]/div/div[5]/a/span[2]").text
+            last2 = last.split(" ")
+            last_page = int(last2[1]) + 1
+        elif len(all_pageList) == 6:
+            last = driver.find_element(by="xpath", value="//*[@id='review_list_page_container']/div[4]/div/div[1]/div/div[2]/div/div[6]/a/span[2]").text
+            last2 = last.split(" ")
+            last_page = int(last2[1]) + 1
+        elif len(all_pageList) == 1:
+            last_page = current_page
+    
+    try:
+        print("Total Pages- " + str(last_page))
+    except Exception as e: 
+        last_page=1
+        print("Total Pages- " + str(last_page))
     review_body=[]
     main_dict={}
     while current_page <= last_page:
-        print("Current Page- " + str(current_page))
+        print("Current Page- " +str(current_page))
         time.sleep(3)
         
         page_source=driver.page_source
@@ -135,7 +165,15 @@ def get_review_body(url):
         
         time.sleep(3)
         if current_page<last_page:
-            driver.find_element(by="xpath", value="//a[contains(@class, 'pagenext')]").click()
+            while True:
+                try:
+                    driver.find_element(by="xpath", value="//a[contains(@class, 'pagenext')]").click()
+                    break
+                except:    
+                    print("Click Error-Trying Again")
+                    time.sleep(5)
+                    pass
+                  
         current_page +=1
     
     driver.quit()
