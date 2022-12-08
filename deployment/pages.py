@@ -32,6 +32,7 @@ g=Graphs()
 
 df_og=dl.pp_raw_hotel_data()
 ### ---------------------------------------
+from charts_functions_compiled import charts
 
 '''
 pd.set_option('display.max_rows', 500)
@@ -80,5 +81,41 @@ class Pages:
     def page_three():
         st.title(
             "Charts Dump, Unformatted"
+            
         )
+        
+        # time_series_initial
+        # local_vs_foreign
+        # room_types
+        # occupant_types
+        # nights_stayed
+        # time_series_month
+        # time_series_year
+        # wordcloud - doesn't print yet
+        # quality_and_stars - doesn't print yet
+        # facilities_positive
+        # facilities_negative
+        
+        charts.time_series_initial() 
+        st.write("time_series_initial")
+        charts.local_vs_foreign() 
+        st.write("local_vs_foreign")
+        charts.room_types() 
+        st.write("room_types")
+        charts.occupant_types() 
+        st.write("occupant_types")
+        charts.nights_stayed() 
+        st.write("nights_stayed")
+        charts.time_series_month() 
+        st.write("time_series_month")
+        charts.time_series_month() 
+        st.write("time_series_year")
+        charts.wordcloud() 
+        st.write("wordcloud")
+        charts.quality_and_stars() 
+        st.write("quality_and_stars")
+        charts.facilities_positive() 
+        st.write("facilities_positive")
+        charts.facilities_negative() 
+        st.write("facilities_negative")
         

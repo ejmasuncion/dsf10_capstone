@@ -134,7 +134,7 @@ class charts:
         
         
         cf.layout_v1(fig,"Local vs Foreign",500,500,order)
-        fig.show()
+        st.plotly_chart(fig, use_container_width=True)
 
     def room_types():
         mapping_dict={1:"Good Review",0: "Bad Review"}
@@ -164,7 +164,7 @@ class charts:
         
         cf.layout_v1(fig,"Room Types",500,1000,order_green)
         
-        fig.show()
+        st.plotly_chart(fig, use_container_width=True)
         
     def occupant_types():
         # Stacked Histplot (Compare Proportions)
@@ -192,7 +192,7 @@ class charts:
         
         cf.layout_v1(fig,"Occupant Types",500,700,order)
         
-        fig.show()
+        st.plotly_chart(fig, use_container_width=True)
                 
                 
     def nights_stayed():
@@ -221,7 +221,7 @@ class charts:
         fig.add_trace(go.Bar(x=data2.index, y=data2[data2.columns[0]].values.tolist(),name="Bad", opacity=0.6, marker_color="red"),row=1, col=1)
         
         cf.layout_v1(fig,"Nights Stayed in Hotels",500,500,order,"ascending")
-        fig.show()
+        st.plotly_chart(fig, use_container_width=True)
     
     def time_series_month():
         mapping_dict={1:"Good Review",0: "Bad Review"}
@@ -247,7 +247,7 @@ class charts:
         fig.add_trace(go.Bar(x=data2.index, y=data2[data2.columns[0]].values.tolist(),name="Bad", opacity=0.6, marker_color="red"),row=1, col=1)
         
         cf.layout_v1(fig,"Reviews Per Month",490,1000,order)
-        fig.show()
+        st.plotly_chart(fig, use_container_width=True)
         
     def time_series_year():
         mapping_dict={1:"Good Review",0: "Bad Review"}
@@ -276,7 +276,7 @@ class charts:
         
         
         cf.layout_v1(fig,"Reviews Per Year",500,700,order)
-        fig.show()
+        st.plotly_chart(fig, use_container_width=True)
         
     
     def tester():
@@ -306,11 +306,11 @@ class charts:
         # Generate a wordcloud
         wc.generate(" ".join(tweet for tweet in reviews_uni.word))
         # show
-        plt.figure(figsize=[15,8],dpi=100)
+        g = plt.figure(figsize=[15,8],dpi=100)
         #plt.imshow(wc, interpolation='bilinear')
         plt.imshow(wc, interpolation='bilinear',cmap=plt.cm.gray)
         plt.axis("off")
-        plt.show()
+        st.pyplot(g)
         
     def quality_and_stars():
         
@@ -339,6 +339,9 @@ class charts:
                     )
                     
         g.fig.set_size_inches(12,7)
+        st.pyplot(g)
+        
+        
 
 
         
@@ -355,7 +358,7 @@ class charts:
         #fig.add_trace(go.Bar(y=data1.index, x=data1[data1.columns[0]].values.tolist(),name="Good", opacity=0.6, marker_color="green",width=100),row=1, col=1)
         
         cf.layout_v2(fig,"Facilities Most Likely to <br>Contribute to a Positive Review",500,600,order_green)
-        fig.show()  
+        st.plotly_chart(fig, use_container_width=True)
         
     def facilities_negative():
         fig = make_subplots(rows=1, cols=1,
@@ -368,4 +371,4 @@ class charts:
         fig.add_trace(go.Bar(y=data2.index, x=data2[data2.columns[0]].values.tolist(),name="Bad", opacity=0.6, marker_color="red",orientation='h'),row=1, col=1)
         
         cf.layout_v2(fig,"Facilities Most Likely to <br>Contribute to a Negative Review",500,600,order_red)
-        fig.show()
+        st.plotly_chart(fig)

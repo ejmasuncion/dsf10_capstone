@@ -7,7 +7,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from _1_load_data import Load_Data
-#import streamlit as st
+import streamlit as st
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -232,7 +232,7 @@ class Graphs:
 
         self.annotate_subplot_text(fig,'2023-03-01',7.9,"<b>Average<br>Review<br>Score</b>",-50,0,"x1","y1")
         #fig.show(renderer="browser")
-        fig.show(config=self.config)
+        st.plotly_chart(fig, use_container_width=True)
 
 
 
@@ -243,7 +243,7 @@ class Graphs:
 if __name__=='__main__':
     #print("Hello")
     g=Graphs()
-
+    g.plot_reviews_timeseries()
 
 
 
