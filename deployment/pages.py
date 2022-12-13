@@ -155,7 +155,7 @@ class Pages:
             st.markdown('Occupant Type')
             choice_occupant = st.selectbox("Choose one", ["Solo Traveler", "Couple", "Family", "Group"])
             st.markdown('City')
-            choice_city = st.text_input("Input City")
+            choice_city = st.text_input("Input City", placeholder= 'Manila City')
             st.markdown('Number of Nights')
             choice_nights = st.number_input("Input Number of Nights", 1, 50)
             st.markdown('Other Facilities')
@@ -176,7 +176,10 @@ class Pages:
         BDK = len(choice_bed)
         # SFK = len(choice_sec)
         OCT = Classifier.get_occupant(choice_occupant)
-        LAT, LON = Classifier.get_lat_long(choice_city)
+        if choice_city == '':
+            LAT, LON = 0, 0
+        else:
+            LAT, LON = Classifier.get_lat_long(choice_city)
         NON = int(choice_nights)
         OTF = len(choice_other)
         BTK = len(choice_bath)
