@@ -90,10 +90,7 @@ class Pages:
         st.title(
             "Results"
         )
-        
-        
-        
-    
+
         # time_series_initial
         # local_vs_foreign
         # room_types
@@ -106,8 +103,8 @@ class Pages:
         # facilities_positive
         # facilities_negative
         
-        # charts.time_series_initial() 
-        # st.write("time_series_initial")
+        charts.time_series_initial() 
+        st.write("time_series_initial")
         charts.local_vs_foreign() 
         st.write("local_vs_foreign")
         # charts.room_types() 

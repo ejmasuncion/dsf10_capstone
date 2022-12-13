@@ -32,7 +32,7 @@ if selection == "Introduction":
 elif selection == "EDA Findings":
     Pages.page_two()
     
-elif selection == "Results":
+elif selection == "Clusters and Results":
     Pages.page_three()
     
 elif selection == "Model":
