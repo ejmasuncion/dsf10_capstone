@@ -5,15 +5,16 @@ from charts_functions_compiled import charts
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
 
-col1, col2, col3 = st.columns(3)
+col1, col2, col3 = st.columns(3, gap="large")
 with col1:
     st.write(" ")
 with col2:
-    st.image("pictures/Larana.png")
+    st.image("pictures/Larana.png", width=600)
 with col3:
     st.write(" ")
     
 st.markdown(" ")
+
 
 list_of_pages = [
     "Introduction",

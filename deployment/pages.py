@@ -63,7 +63,7 @@ class Pages:
         with col1:
             st.write(" ")
         with col2:
-            st.image("pictures/header_pic.jpg", width = 800)
+            st.image("pictures/header_pic.jpg", width = 600)
         with col3:
             st.write(" ")
         
