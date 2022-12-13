@@ -24,6 +24,7 @@ import pickle
 from _1_load_data import Load_Data
 from _2_visuals import Graphs
 from _2_chart_functions import Chart_Functions
+from _4_classifier import *
 
 ### ---------------------------------------
 dl=Load_Data()
@@ -131,3 +132,63 @@ class Pages:
         st.title(
             "The Model"
         )
+        col1, col2 = st.columns([1,1])
+
+        with col1:
+            st.markdown('Hotel Star Rating')
+            choice_star = st.number_input("Choose one", 1, 5)
+            st.markdown('Nationality')
+            choice_nationality = st.selectbox("Choose One", ['Filipino', 'Foreigner'])
+            st.markdown('Price')
+            choice_price = st.number_input("Input Price")
+            st.markdown('Entertainment Facilities')
+            choice_ent = st.multiselect('Pick all applicable', ['restaurant', 'bar', 'swimming pool', 'fitness room', 'spa & wellness centre', 'garden'])
+            st.markdown('Bedroom Amenities')
+            choice_bed = st.multiselect('Pick all applicable', ['air conditioning', 'tv', 'linens', 'flat-screen tv', 'cable channels', 'telephone', 'electric kettle', 
+                'slippers', 'wardrobe or closet', 'clothes rack', 'socket near the bed', 'refrigerator', 
+                'satellite channels', 'terrace', 'soundproof rooms', 'safe'])
+            st.markdown('Hotel Services')
+            choice_ser = st.multiselect('Pick all applicable', ['airport shuttle', 'elevator', 'daily housekeeping', 'room service', 'baggage storage', 'laundry',
+                'upper floors accessible by elevator', 'wake-up service', 'concierge', 'facilities for disabled guests', 'ironing service'])
+            st.markdown('Number of Walkable Attractions')
+            choice_loc = st.number_input("Input Number of Destinations", 1, 50)
+            
+        with col2:
+            st.markdown('Occupant Type')
+            choice_occupant = st.selectbox("Choose one", ["Solo Traveler", "Couple", "Family", "Group"])
+            st.markdown('City')
+            choice_city = st.text_input("Input City")
+            st.markdown('Number of Nights')
+            choice_nights = st.number_input("Input Number of Nights", 1, 50)
+            st.markdown('Other Facilities')
+            choice_other = st.multiselect('Pick all applicable', ['free parking', 'non-smoking rooms', 'designated smoking area', 'desk', 'smoke-free property', 
+                   'meeting/banquet facilities', 'family rooms', 'facilities for disabled guests', 'business center'])
+            st.markdown('Bathroom Amenities')
+            choice_bath = st.multiselect('Pick all applicable', ['private bathroom', 'toilet', 'towels', 'free toiletries', 'shower', 'toilet paper', 
+                 'bidet', 'hairdryer', 'bathtub or shower', 'bathrobe', 'hot tub/jacuzzi', 'dryer', 'raised toilet', 
+                 'bathroom emergency cord'])
+            st.markdown('Distance to nearest Airport')
+            choice_airport = st.number_input("Input Distance")
+            
+        
+        STA = int(choice_star)
+        NAT = Classifier.get_nationality(choice_nationality)
+        PRC = choice_price
+        ENT = len(choice_ent)
+        BDK = len(choice_bed)
+        # SFK = len(choice_sec)
+        OCT = Classifier.get_occupant(choice_occupant)
+        LAT, LON = Classifier.get_lat_long(choice_city)
+        NON = int(choice_nights)
+        OTF = len(choice_other)
+        BTK = len(choice_bath)
+        SRK = len(choice_ser)
+        CWA = int(choice_loc)
+        TOP = float(NON*PRC)
+        DNA = int(choice_airport)
+
+        input_features = Classifier.input_features(STA, NAT, PRC, ENT, BDK, OCT, LAT, LON, NON, OTF, BTK, SRK, CWA, DNA, TOP)
+        prediction = ''
+        if st.button('Submit'):
+            prediction = Classifier.model_fit(input_features)
+        st.write(prediction)
