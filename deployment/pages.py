@@ -43,6 +43,7 @@ pd.set_option('display.float_format', '{:,.5f}'.format)
 
 
 pd.set_option('display.float_format', '{:,.2f}'.format)
+st.set_option('deprecation.showPyplotGlobalUse', False)
 
 # Setting general format to the graphs
 sns.set_theme(style="white", font="sans-serif")
@@ -52,25 +53,30 @@ st.set_page_config (layout="wide")
 
 class Pages:
     
-    # Page 1 - "The Project"
     def page_one():
-    # Write the title and the subheader
-        st.title(
-            "Testing page"
-        )
-        st.subheader(
-            'Capstone Group 4'
-            )
-        st.markdown('Andre | Andres | Enrico | Karen | Karla')
-        st.markdown('Test page')
+        st.markdown("<h1 style='text-align: center'>TRAVEL LOG</h1>", unsafe_allow_html=True)
+        st.markdown("<h3 style='text-align: center'>Harnessing the Power of Data for Business Decisions in the Hotel Industry</h3>", unsafe_allow_html=True)
 
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.write('')
+        
+        with col2:
+            image_path = "pictures/header_pic.jpg"
+            st.image(image_path)
+            
+        with col3:
+            st.write('')
+        
+        
+        # st.markdown("<h4 style='text-align: center'>Andre | Andres | Enrico | Karen | Karla</h4>", unsafe_allow_html=True)
         
 
     # Page 2 - "Big News for Zack!
     def page_two():
         # Write the title
         st.title(
-            "Another testing page"
+            "EDA Findings"
         )
         st.caption(
             "Testing caption")
@@ -80,10 +86,12 @@ class Pages:
         
     def page_three():
         st.title(
-            "Charts Dump, Unformatted"
-            
+            "Results"
         )
         
+        
+        
+    
         # time_series_initial
         # local_vs_foreign
         # room_types
@@ -96,26 +104,30 @@ class Pages:
         # facilities_positive
         # facilities_negative
         
-        charts.time_series_initial() 
-        st.write("time_series_initial")
+        # charts.time_series_initial() 
+        # st.write("time_series_initial")
         charts.local_vs_foreign() 
         st.write("local_vs_foreign")
-        charts.room_types() 
-        st.write("room_types")
-        charts.occupant_types() 
-        st.write("occupant_types")
-        charts.nights_stayed() 
-        st.write("nights_stayed")
-        charts.time_series_month() 
-        st.write("time_series_month")
-        charts.time_series_month() 
-        st.write("time_series_year")
-        charts.wordcloud() 
-        st.write("wordcloud")
-        charts.quality_and_stars() 
-        st.write("quality_and_stars")
-        charts.facilities_positive() 
-        st.write("facilities_positive")
-        charts.facilities_negative() 
-        st.write("facilities_negative")
+        # charts.room_types() 
+        # st.write("room_types")
+        # charts.occupant_types() 
+        # st.write("occupant_types")
+        # charts.nights_stayed() 
+        # st.write("nights_stayed")
+        # charts.time_series_month() 
+        # st.write("time_series_month")
+        # charts.time_series_month() 
+        # st.write("time_series_year")
+        # charts.wordcloud() 
+        # st.write("wordcloud")
+        # charts.quality_and_stars() 
+        # st.write("quality_and_stars")
+        # charts.facilities_positive() 
+        # st.write("facilities_positive")
+        # charts.facilities_negative() 
+        # st.write("facilities_negative")
         
+    def page_four():
+        st.title(
+            "The Model"
+        )

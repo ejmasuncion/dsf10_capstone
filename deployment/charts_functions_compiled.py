@@ -72,7 +72,7 @@ def get_long_format_proportions (df_faci):
         #value_vars=['inc_q', 'age']
     )
 
-    long_df
+    
 
 
     grouped=long_df.groupby(["variable"]).agg(
@@ -124,7 +124,7 @@ class charts:
         
         data1,data2,data3,order,order_green, order_red=list_for_data
         
-        fig = make_subplots(rows=1, cols=1,
+        fig = px.subplots.make_subplots(rows=1, cols=1,
         #vertical_spacing = 0.04,
         subplot_titles=("",""))
         
@@ -134,7 +134,7 @@ class charts:
         
         
         cf.layout_v1(fig,"Local vs Foreign",500,500,order)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=False, )
 
     def room_types():
         mapping_dict={1:"Good Review",0: "Bad Review"}
@@ -164,7 +164,7 @@ class charts:
         
         cf.layout_v1(fig,"Room Types",500,1000,order_green)
         
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=False)
         
     def occupant_types():
         # Stacked Histplot (Compare Proportions)
@@ -192,7 +192,7 @@ class charts:
         
         cf.layout_v1(fig,"Occupant Types",500,700,order)
         
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=False)
                 
                 
     def nights_stayed():
@@ -221,7 +221,7 @@ class charts:
         fig.add_trace(go.Bar(x=data2.index, y=data2[data2.columns[0]].values.tolist(),name="Bad", opacity=0.6, marker_color="red"),row=1, col=1)
         
         cf.layout_v1(fig,"Nights Stayed in Hotels",500,500,order,"ascending")
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=False)
     
     def time_series_month():
         mapping_dict={1:"Good Review",0: "Bad Review"}
@@ -247,7 +247,7 @@ class charts:
         fig.add_trace(go.Bar(x=data2.index, y=data2[data2.columns[0]].values.tolist(),name="Bad", opacity=0.6, marker_color="red"),row=1, col=1)
         
         cf.layout_v1(fig,"Reviews Per Month",490,1000,order)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=False)
         
     def time_series_year():
         mapping_dict={1:"Good Review",0: "Bad Review"}
@@ -276,7 +276,7 @@ class charts:
         
         
         cf.layout_v1(fig,"Reviews Per Year",500,700,order)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=False)
         
     
     def tester():
@@ -358,9 +358,10 @@ class charts:
         #fig.add_trace(go.Bar(y=data1.index, x=data1[data1.columns[0]].values.tolist(),name="Good", opacity=0.6, marker_color="green",width=100),row=1, col=1)
         
         cf.layout_v2(fig,"Facilities Most Likely to <br>Contribute to a Positive Review",500,600,order_green)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig)
         
     def facilities_negative():
+        sns.set_theme(style="ticks")
         fig = make_subplots(rows=1, cols=1,
                     #vertical_spacing = 0.04,
         subplot_titles=("",""))
