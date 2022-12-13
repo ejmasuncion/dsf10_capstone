@@ -134,7 +134,7 @@ class charts:
         
         
         cf.layout_v1(fig,"Local vs Foreign",500,500,order)
-        st.plotly_chart(fig, use_container_width=False, )
+        st.plotly_chart(fig, use_container_width=False)
 
     def room_types():
         mapping_dict={1:"Good Review",0: "Bad Review"}

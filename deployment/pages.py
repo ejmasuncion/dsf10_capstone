@@ -54,25 +54,26 @@ st.set_page_config (layout="wide")
 class Pages:
     
     def page_one():
-        st.markdown("<h1 style='text-align: center'>TRAVEL LOG</h1>", unsafe_allow_html=True)
-        st.markdown("<h3 style='text-align: center'>Harnessing the Power of Data for Business Decisions in the Hotel Industry</h3>", unsafe_allow_html=True)
+
+        st.markdown("<h1 style='text-align: center'>Harnessing the Power of Data for Business Decisions in the Hotel Industry</h1>", unsafe_allow_html=True)
+        st.markdown("<h3 style='text-align: center'>Uplifting Philippine tourism by helping hotel owners improve service through a data-driven and customer centric approach</h3>", unsafe_allow_html=True)
 
         col1, col2, col3 = st.columns(3)
         with col1:
-            st.write('')
-        
+            st.write(" ")
         with col2:
-            image_path = "pictures/header_pic.jpg"
-            st.image(image_path)
-            
+            st.image("pictures/header_pic.jpg", width = 800)
         with col3:
-            st.write('')
+            st.write(" ")
         
         
-        # st.markdown("<h4 style='text-align: center'>Andre | Andres | Enrico | Karen | Karla</h4>", unsafe_allow_html=True)
+        st.markdown("")
+        
+        st.markdown("<h4 style='text-align: center'>DSF Cohort 10 Group 4", unsafe_allow_html=True)
+        st.markdown("<h4 style='text-align: center'>Andre | Andres | Enrico | Karen | Karla</h4>", unsafe_allow_html=True)
+        st.markdown("<h4 style='text-align: center'>Mentored by Ran</h4>", unsafe_allow_html=True)
         
 
-    # Page 2 - "Big News for Zack!
     def page_two():
         # Write the title
         st.title(
