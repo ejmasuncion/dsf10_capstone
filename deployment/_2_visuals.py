@@ -7,7 +7,8 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from _1_load_data import Load_Data
-import streamlit as st
+from _2_chart_functions import Chart_Functions
+#import streamlit as st
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -20,32 +21,47 @@ class Graphs:
         dl=Load_Data()
         self.pp_raw_hotel_data=dl.pp_raw_hotel_data()
 
+        cf=Chart_Functions()
+        self.cf=cf
 
         #Config
         self.config = {
         'toImageButtonOptions': {
             'format': 'png', # one of png, svg, jpeg, webp
             'filename': 'custom_image',
-            'height': 490,
-            'width': 1300,
+            'height': 450,
+            'width': 500,
             'scale': 2 # Multiply title/legend/axis/canvas sizes by this factor
   }
 }
 
+        #Color Compilation
+
+        self.red="#DD634F"
+        self.maroon="#AB5474"
+        self.pink="#ffcccc"
+
+        self.green="#4fdd63"
+        #self.green="#28d140"
+        self.navy_green="#448299"
+
+        self.light_blue="#75B9DF"
+        self.blue="#3558C9"
+        self.navy_blue="#2D3B6A"
+        self.purple="#646EC8"
+
+        self.grey="#E9E3E2"
+
+
 
         #Background Color
-        self.bgcolor="#FAFAF9"  ##F8FBFB"  #FAFAF9  #F0F2F6
+        self.bgcolor=self.navy_blue  ##F8FBFB"  -#FAFAF9  #F0F2F6 #EDE9EA
         self.gridcolor="#D4E5E6"
 
 
-        #Content Colors
-        purple="#646EC8"
-        green="#4fdd63"
-        red="#DD634F"
-
-        self.line_color1=purple
-        self.line_color2=green
-        self.line_color3=red
+        self.line_color1=self.pink
+        self.line_color2=self.light_blue
+        self.line_color3=self.red
 
 
         #Annotation Colors
@@ -133,7 +149,12 @@ class Graphs:
         opacity=0.8
         )
 
-    def annotate_subplot_text(self,fig,x,y,text,axv,axy,xref,yref, bgcolor=1,showarrow=False):
+    def annotate_subplot_text(self,fig,x,y,text,axv,axy,xref,yref, bgcolor="default",showarrow=False):
+
+        if bgcolor=="default":
+            color=self.line_color1
+        else:
+            color=bgcolor
 
         fig.add_annotation(
         x=x,
@@ -145,7 +166,7 @@ class Graphs:
         font=dict(
             family="sans-serif",
             size=14, 
-            color=self.line_color1
+            color=color,
             ),
         align="center",
         arrowhead=2,
@@ -160,9 +181,9 @@ class Graphs:
     #Actual Plotting
     def plot_reviews_timeseries(self):
         df=self.pp_raw_hotel_data
-        data1=df.groupby("date_stayed")[["review_score"]].mean()
-        data2=df[df.good_review==1].groupby("date_stayed")[["review_score"]].sum()
-        data3=df[df.good_review==0].groupby("date_stayed")[["review_score"]].sum()
+        data1=df.groupby("date_stayed")[["review_score"]].mean().iloc[:-1]
+        data2=df[df.good_review==1].groupby("date_stayed")[["review_score"]].sum().iloc[:-1]
+        data3=df[df.good_review==0].groupby("date_stayed")[["review_score"]].sum().iloc[:-1]
 
         fig = make_subplots(rows=1, cols=2,
                             #vertical_spacing = 0.04,
@@ -182,23 +203,26 @@ class Graphs:
                     row=1, col=1)
 
         fig.add_trace(
-            go.Scatter(x=data2.index, y=data2.review_score.tolist(), name="Positive Reviews", 
-                    #line_color=self.line_color2, 
+            go.Scatter(x=data3.index, y=data3.review_score.tolist(), name="Negative Reviews", 
+                    line_color=self.line_color3, 
                     #legendgroup=2,
-                    fill='tozeroy',
+                    fill='tozeroy',fillcolor='darkviolet',
                     #stackgroup=1
                     ),
                     row=1, col=2)
 
 
         fig.add_trace(
-            go.Scatter(x=data3.index, y=data3.review_score.tolist(), name="Negative Reviews", 
-                    #line_color=self.line_color3, 
+            go.Scatter(x=data2.index, y=data2.review_score.tolist(), name="Positive Reviews", 
+                    line_color=self.line_color2, 
                     #legendgroup=2,
-                    fill='tozeroy',
+                    fill='tonexty',
                     #stackgroup=1
                     ),
                     row=1, col=2)
+
+
+
 
 
 
@@ -210,40 +234,111 @@ class Graphs:
 
         fig.update_xaxes(showgrid=False,zeroline=False)
 
-        #bgcolor=self.bgcolor
-        bgcolor="#FAFAF9"
-        bgcolor="#F8FBFB"
+        bgcolor=self.bgcolor
+        #bgcolor="#FAFAF9"
+        #bgcolor="#F8FBFB"
         fig.update_layout(legend=dict(
             orientation="v",
             groupclick="toggleitem"
             ),
                 title={
-                        'text': "<b>Total Reviews from 2019-2022</b>",
+                        'text': "<b>Reviews Over Time</b>",
                         'y':0.9,
                         'x':0.5,
                         'font_size':20,
                         'xanchor': 'center',
                         'yanchor': 'top'},
-            #height=490, width=1300,
+            height=370, width=800,
             #font_size=10,
             paper_bgcolor=bgcolor,#F8FBFB
             plot_bgcolor=bgcolor
             )
 
-        self.annotate_subplot_text(fig,'2023-03-01',7.9,"<b>Average<br>Review<br>Score</b>",-50,0,"x1","y1")
+        fig.update_layout(legend=dict(
+            yanchor="top",
+            y=0.99,
+            xanchor="left",
+            x=0.67,
+            #bgcolor = 'white',
+        ))
+
+        self.annotate_subplot_text(fig,'2023-03-01',7.85,"<b>Average<br>Review<br>Score</b>",-50,0,"x1","y1")
         #fig.show(renderer="browser")
-        st.plotly_chart(fig, use_container_width=True)
+        #fig.show(config=self.config)
+        return fig
+
+
+    def plot_reviews_timeseries_v2(self,line_color1="default",line_color2="default",line_color3="default",height=450, width=500):
+
+        if line_color1=="default":
+            color1=self.line_color1
+        else:
+            color1=line_color1
+
+        if line_color2=="default":
+            color2=self.line_color2
+        else:
+            color2=line_color2
+
+        if line_color3=="default":
+            color3=self.line_color3
+        else:
+            color3=line_color3
+
+
+
+        df=self.pp_raw_hotel_data
+        data1=df.groupby("date_stayed")[["review_score"]].mean().iloc[:-1]
+        data2=df[df.good_review==1].groupby("date_stayed")[["review_score"]].sum().iloc[:-1]
+        data3=df[df.good_review==0].groupby("date_stayed")[["review_score"]].sum().iloc[:-1]
+
+        fig = make_subplots(rows=1, cols=1,
+                            #vertical_spacing = 0.04,
+        subplot_titles=("", ""))
+
+        fig.add_trace(
+            go.Scatter(x=data3.index, y=data3.review_score.tolist(), name="Negative Reviews", 
+                    line_color=color2, 
+                    #legendgroup=2,
+                    fill='tozeroy',fillcolor=color2,
+                    #stackgroup=1
+                    opacity=1,
+                    ),
+                    row=1, col=1)
+
+
+        fig.add_trace(
+            go.Scatter(x=data2.index, y=data2.review_score.tolist(), name="Positive Reviews", 
+                    line_color=color1, 
+                    #legendgroup=2,
+                    fill='tonexty',fillcolor=color1,
+                    #stackgroup=1
+                    ),
+                    row=1, col=1)
+
+
+        bgcolor=self.bgcolor
+
+        self.cf.update_layout(fig,"<b>Reviews Over Time</b>",450,500,bgcolor=self.bgcolor,font_color="white",title_font_size=30)
 
 
 
 
+
+        #fig.show(config=self.config)
+        #fig.write_image("png/timeseries.png")
+        return fig
 
 
 #%%
 if __name__=='__main__':
     #print("Hello")
     g=Graphs()
-    g.plot_reviews_timeseries()
+    #fig=g.plot_reviews_timeseries_v2(line_color1="white",line_color2="pink",height=450,width=500)
+    fig=g.plot_reviews_timeseries_v2(line_color1="#448299",line_color2="#AB5474",height=450,width=500)
+    g.cf.update_layout_legend(fig, 0.15,1)
+
+    fig.show()
 
 
 

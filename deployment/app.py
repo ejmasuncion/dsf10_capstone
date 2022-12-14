@@ -18,8 +18,8 @@ st.markdown(" ")
 
 list_of_pages = [
     "Introduction",
-    "EDA Findings",
-    "Clusters and Results",
+    "Clusters",
+    "Dashboard",
     "Model"
 ]
 
@@ -30,10 +30,10 @@ selection = option_menu("", list_of_pages, orientation='horizontal', icons=icons
 if selection == "Introduction":
     Pages.page_one()
 
-elif selection == "EDA Findings":
+elif selection == "Clusters":
     Pages.page_two()
     
-elif selection == "Clusters and Results":
+elif selection == "Dashboard":
     Pages.page_three()
     
 elif selection == "Model":

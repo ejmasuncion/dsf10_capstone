@@ -7,6 +7,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from _1_load_data import Load_Data
+
 #import streamlit as st
 
 import warnings
@@ -251,6 +252,7 @@ class Chart_Functions:
         # fig.update_xaxes(showgrid=False,zeroline=False)
 
 
+    #Layout_v2 for Vertical
     def layout_v2(self,fig_,title,height,width,order,order_type='default', bgcolor="#F8FBFB",grid_color="white"):
     
         #Cutomizable
@@ -303,6 +305,133 @@ class Chart_Functions:
         # fig.update_xaxes(showgrid=False,zeroline=False)
 
 
+    def update_layout(self,fig_,title,height,width,bgcolor,font_color,show_ygrid=True,
+                            font_size=20,title_font_size="default",title_x=0.5,title_y=0.9):
+        
+        if title_font_size=="default":
+            font_title=font_size
+        else:
+            font_title=title_font_size
+
+        fig_.update_layout(
+        # legend=dict(
+        #     orientation="v",
+        #     groupclick="toggleitem",
+        #     yanchor="top",
+        #     y=0.99,
+        #     xanchor="left",
+        #     x=0.25,
+        #     #bgcolor = 'white',
+            
+        #     ),
+
+        title={
+                'text': "<b>{}</b>".format(title),
+                #'font':"Times New Roman",
+                'y':title_y,
+                'x':title_x,
+                'font_size':font_title,
+                'xanchor': 'center',
+                'yanchor': 'top'},
+
+        paper_bgcolor=bgcolor,#F8FBFB
+        plot_bgcolor=bgcolor,
+
+        height=height, width=width,
+
+        font=dict(
+            family="sans-serif",
+            size=font_size,
+            color=font_color,
+        ),
+        
+
+        title_font_family="sans-serif",       
+        )
+
+
+        fig_.update_yaxes(showgrid=show_ygrid, 
+                    gridwidth=1, 
+                    gridcolor=font_color, 
+                    griddash='dot',
+                    zeroline=False)
+
+        fig_.update_xaxes(showgrid=False,zeroline=False)
+        print("test")
+
+
+    def update_layout_order(self,fig_,order=[],order_type="default",orientation="v"):
+        if order_type=="default":
+            axis={'categoryorder':'array', 'categoryarray':order}
+        
+        elif order_type=="ascending":
+            axis={'categoryorder':'category ascending'}
+
+        elif order_type=="descending":
+            axis={'categoryorder':'category descending'}
+
+
+        if orientation=="v":
+            fig_.update_layout(barmode="stack", 
+                                #barnorm="percent",
+                                xaxis=axis,       
+
+                )
+        if orientation=="h":
+            fig_.update_layout(barmode="stack", 
+                                #barnorm="percent",
+                                yaxis=axis,       
+
+                )
+
+    def update_layout_order_subplots(self,fig_,order=[],order_type="default",orientation="v",row=1,column=1):
+        if order_type=="default":
+            axis={'categoryorder':'array', 'categoryarray':order}
+        
+        elif order_type=="ascending":
+            axis={'categoryorder':'category ascending'}
+
+        elif order_type=="descending":
+            axis={'categoryorder':'category descending'}
+
+
+        if orientation=="v":
+            fig_.update_layout(barmode="stack", 
+                                #barnorm="percent",
+                                xaxis=axis,row=row,column=column       
+
+                )
+        if orientation=="h":
+            fig_.update_layout(barmode="stack", 
+                                #barnorm="percent",
+                                yaxis=axis,row=row,column=column        
+
+                )
+
+
+    def update_layout_legend(self,fig_,x,y,xanchor="left",yanchor="top",orientation="v",showlegend=True):
+        fig_.update_layout(
+        showlegend=showlegend,
+        legend=dict(
+            orientation=orientation,
+            groupclick="toggleitem",
+            yanchor=yanchor,
+            y=y,
+            xanchor=xanchor,
+            x=x,
+            #bgcolor = 'white',
+            
+            ),
+        )
+
+
+    def update_layout_margin(self,fig,left,right, bottom, top):
+        fig.update_layout( margin=go.layout.Margin(
+                l=left, #left margin
+                r=right, #right margin
+                b=bottom, #bottom margin
+                t=top, #top margin
+            ))
 
 #%%
 if __name__=='__main__':
