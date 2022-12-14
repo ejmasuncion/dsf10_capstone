@@ -5,11 +5,11 @@ from charts_functions_compiled import charts
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
 
-col1, col2, col3 = st.columns(3, gap="large")
+col1, col2, col3 = st.columns([20,60,20], gap="large")
 with col1:
     st.write(" ")
 with col2:
-    st.image("pictures/Larana.png", width=600)
+    st.image("pictures/Larana.png", width=400)
 with col3:
     st.write(" ")
     
@@ -24,7 +24,7 @@ list_of_pages = [
 ]
 
 # Left the inside blank so that it really looks like a navbar
-icons = ['building', 'chart_with_upwards_trend', 'circle', 'gear']
+icons = ['building' , 'person','bar-chart-fill', 'gear']
 selection = option_menu("", list_of_pages, orientation='horizontal', icons=icons)
 
 if selection == "Introduction":
