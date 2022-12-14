@@ -11,13 +11,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.decomposition import PCA
-from sklearn.preprocessing import StandardScaler
-
 from PIL import Image
-from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
 
 ### ---------------------------------------
 import warnings
