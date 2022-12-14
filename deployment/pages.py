@@ -78,7 +78,7 @@ class Pages:
         st.markdown("<h5 style='text-align: justify'>The pandemic devastated the hotel industry, and it hasn't recovered since.</h5>", unsafe_allow_html=True)
         st.markdown("""---""")
         st.markdown("<h2 style='text-align: center'><strong>What can Travelog do?</strong></h2>", unsafe_allow_html=True)
-        st.markdown("<h5 style='text-align: justify'>Travelog aims to aid Philippine tourism by helping hotel owners improve services to reach beyond international standards. It utilizes machine learning to provide hotel owners with insight on how to make a better experience for customers increase the expected review rating of customers by reallocating and maximizing the efficiency of the amenities, location, pricing, and other features of a hotel.</h5>", unsafe_allow_html=True)
+        st.markdown("<h5 style='text-align: justify'>Travelog aims to aid Philippine tourism by helping hotel owners improve services to reach beyond international standards. It utilizes machine learning to provide hotel owners with insight on how to make a better experience for customers to increase the expected review rating by reallocating and maximizing the efficiency of the amenities, location, pricing, and other features of a hotel.</h5>", unsafe_allow_html=True)
         st.markdown("""---""")
 
     def page_two():
