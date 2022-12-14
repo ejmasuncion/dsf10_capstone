@@ -11,13 +11,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.decomposition import PCA
-from sklearn.preprocessing import StandardScaler
-
 from PIL import Image
-from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
 
 ### ---------------------------------------
 import warnings
@@ -50,7 +44,6 @@ st.set_option('deprecation.showPyplotGlobalUse', False)
 
 # Setting general format to the graphs
 sns.set_theme(style="white", font="sans-serif")
-# st.set_page_config (layout="wide")
 
 
 
@@ -61,26 +54,37 @@ class Pages:
         st.markdown("<h1 style='text-align: center'>Harnessing the Power of Data for Business Decisions in the Hotel Industry</h1>", unsafe_allow_html=True)
         st.markdown("<h3 style='text-align: center'>Uplifting Philippine tourism by helping hotel owners improve service through a data-driven and customer centric approach</h3>", unsafe_allow_html=True)
 
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.write(" ")
-        with col2:
-            st.image("pictures/header_pic.jpg", width = 600)
-        with col3:
-            st.write(" ")
+        # col1, col2, col3 = st.columns(3, gap="small")
+        # with col1:
+        #     st.write(" ")
+        # with col2:
+        st.image("pictures/header_pic.jpg", width = 700)
+        # with col3:
+        #     st.write(" ")
         
         
         st.markdown("")
         
-        st.markdown("<h4 style='text-align: center'>DSF Cohort 10 Group 4", unsafe_allow_html=True)
-        st.markdown("<h4 style='text-align: center'>Andre | Andres | Enrico | Karen | Karla</h4>", unsafe_allow_html=True)
-        st.markdown("<h4 style='text-align: center'>Mentored by Ran</h4>", unsafe_allow_html=True)
+        st.markdown("<h4 style='text-align: center'>DSF Cohort 10 Group 4<br>Andre | Andres | Enrico | Karen | Karla<br>Mentored by Ran", unsafe_allow_html=True)
         
+        st.markdown("")
+        st.markdown("")
+        st.markdown("")
+        st.markdown("""---""")
+        st.markdown("<h2 style='text-align: center'><strong>Background</strong></h2>", unsafe_allow_html=True)
+        st.markdown("<h5 style='text-align: justify'>The pandemic impacted the hotel industry, causing a decline in total bookings  and narrowing the gap between positive and negative reviews. Travel started to improve in Q3 2021, but did not fully recover to pre-pandemic levels.</h5>", unsafe_allow_html=True)
+        st.markdown("""---""")
+        st.markdown("<h2 style='text-align: center'><strong>The Problem?</strong></h2>", unsafe_allow_html=True)
+        st.markdown("<h5 style='text-align: justify'>The pandemic devastated the hotel industry, and it hasn't recovered since.</h5>", unsafe_allow_html=True)
+        st.markdown("""---""")
+        st.markdown("<h2 style='text-align: center'><strong>What can Travelog do?</strong></h2>", unsafe_allow_html=True)
+        st.markdown("<h5 style='text-align: justify'>Travelog aims to aid Philippine tourism by helping hotel owners improve services to reach beyond international standards. It utilizes machine learning to provide hotel owners with insight on how to make a better experience for customers increase the expected review rating of customers by reallocating and maximizing the efficiency of the amenities, location, pricing, and other features of a hotel.</h5>", unsafe_allow_html=True)
+        st.markdown("""---""")
 
     def page_two():
         st.markdown("<h1 style='text-align: center; font-size: 28px;'>Customer Segmentation</h1>", unsafe_allow_html=True)
         st.markdown("<h3 style='text-align: center; font-size: 15px;color: lightgrey;'> \
-                    <em>-Using K-Means<br>Prototype</em> </h3>"
+                    <em>Using K-Means<br>Prototype</em> </h3>"
                     , unsafe_allow_html=True) 
         st.markdown("<h3 style='text-align: left; font-size: 20px;color: lightgrey;'><u>5 Clusters</u>:</h3>",unsafe_allow_html=True)
         st.markdown("""---""")
